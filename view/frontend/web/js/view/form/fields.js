@@ -159,9 +159,12 @@ define([
                     address.extension_attributes = {};
                 }
 
-                if (address.customAttributes !== undefined && address.customAttributes[0] !== undefined && address.customAttributes[0].attribute_code === 'tig_housenumber') {
-                    address.extension_attributes.tig_housenumber          = address.customAttributes[0].value;
-                    address.extension_attributes.tig_housenumber_addition = address.customAttributes[1].value;
+                for(let attribute in address.customAttributes) {
+                    if(address.customAttributes[attribute].attribute_code === 'tig_housenumber') {
+                        address.extension_attributes.tig_housenumber = address.customAttributes[attribute].value;
+                    } else if (address.customAttributes[attribute].attribute_code === 'tig_housenumber_addition') {
+                        address.extension_attributes.tig_housenumber_addition = address.customAttributes[attribute].value;
+                    }
                 }
             });
 

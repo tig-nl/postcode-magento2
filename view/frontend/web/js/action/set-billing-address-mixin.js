@@ -63,9 +63,14 @@ define([
                 return originalAction();
             }
             // >= M2.3.0
-            if (billingAddress.customAttributes[0] !== undefined && billingAddress.customAttributes[0].attribute_code === 'tig_housenumber') {
-                billingAddress['extension_attributes']['tig_housenumber']          = billingAddress.customAttributes[0].value;
-                billingAddress['extension_attributes']['tig_housenumber_addition'] = billingAddress.customAttributes[1].value;
+            if (billingAddress.customAttributes.length > 0) {
+                billingAddress.customAttributes.forEach(function(customAttribute) {
+                    if(customAttribute.attribute_code === 'tig_housenumber') {
+                        billingAddress['extension_attributes']['tig_housenumber']           = customAttribute.value;
+                    } else if (customAttribute.attribute_code === 'tig_housenumber_addition') {
+                        billingAddress['extension_attributes']['tig_housenumber_addition']  = customAttribute.value;
+                    }
+                });
             }
 
             return originalAction();

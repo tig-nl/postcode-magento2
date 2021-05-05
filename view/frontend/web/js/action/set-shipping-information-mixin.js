@@ -63,9 +63,14 @@ define([
                 return originalAction();
             }
             // >= M2.3.0
-            if (shippingAddress.customAttributes[0] !== undefined && shippingAddress.customAttributes[0].attribute_code === 'tig_housenumber') {
-                shippingAddress['extension_attributes']['tig_housenumber']          = shippingAddress.customAttributes[0].value;
-                shippingAddress['extension_attributes']['tig_housenumber_addition'] = shippingAddress.customAttributes[1].value;
+            if (shippingAddress.customAttributes.length > 0) {
+                shippingAddress.customAttributes.forEach(function(customAttribute) {
+                    if(customAttribute.attribute_code === 'tig_housenumber') {
+                        shippingAddress['extension_attributes']['tig_housenumber']       = customAttribute.value;
+                    } else if (customAttribute.attribute_code === 'tig_housenumber_addition') {
+                        shippingAddress['extension_attributes']['tig_housenumber_addition'] = customAttribute.value;
+                    }
+                });
             }
 
             return originalAction();
